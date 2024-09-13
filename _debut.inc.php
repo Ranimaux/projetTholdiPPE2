@@ -26,7 +26,7 @@ if (!preg_match('/\index.php$/i', $_SERVER['REQUEST_URI'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" href="../../favicon.ico">
+        <link rel="icon" type="image.png" href="img/icons8-ancre-96.png">
 
         <title>THOLDI</title>
 
@@ -35,12 +35,12 @@ if (!preg_match('/\index.php$/i', $_SERVER['REQUEST_URI'])) {
 
         <!-- Bootstrap core JS -->
         <link href="bootstrap-5.1.3-dist/js/bootstrap.js" rel="javascript">
-        
+
         <!-- Custom styles for App -->
         <link href="css/style.css" rel="stylesheet">
 
 
-       
+
 
     </head>
     <body >
@@ -66,6 +66,10 @@ if (!preg_match('/\index.php$/i', $_SERVER['REQUEST_URI'])) {
     </symbol>
     <symbol id="grid" viewBox="0 0 16 16">
         <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/>
+    </symbol>
+    <symbol id="clipboard" viewBox="0 0 16 16">
+        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/>
+        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/>
     </symbol>
     </svg>
 
@@ -103,6 +107,12 @@ if (!preg_match('/\index.php$/i', $_SERVER['REQUEST_URI'])) {
                                     <a href="gestionReservation.php" style="background-color:   #dec359 " class="nav-link text-black fw-bold  m-1  rounded">
                                         <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#table"></use></svg>
                                         Réservation
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="gestionDevis.php" style="background-color:   #dec359 " class="nav-link text-black fw-bold  m-1  rounded">
+                                        <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#clipboard"></use></svg>
+                                        Devis
                                     </a>
                                 </li>
                                 <li>

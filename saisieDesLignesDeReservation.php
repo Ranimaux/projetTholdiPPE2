@@ -15,8 +15,9 @@ include_once '_debut.inc.php';
                     SELECTIONNEZ VOS CONTAINERS
                 </h2>
             </div>
-
+            
         </div>
+        
 
 
 
@@ -41,6 +42,12 @@ include_once '_debut.inc.php';
                 <div class="col">
                     <label for="quantite" class="form-label">Quantité</label>
                     <input type="number" name="quantite" id="quantite" min="0" required/>
+                </div>
+                <div align='center'>
+                    <a class="infobulle">
+                        <img src="img/round-bouton-d-39-aide_318-77423-100x100.jpg" alt="" width="10%" />
+                        <span>Ici, vous allez pouvoir choisir le ou les différents container qu'il vous faut qu'ainsi le nombre du modèle séparément</span>
+                    </a>
                 </div>
             </div> 
             <div class="row mt-5 mb-5">

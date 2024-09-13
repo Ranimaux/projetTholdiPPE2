@@ -22,9 +22,18 @@ $donneesFormulaire = array(
 $donneesDuFormulaire = filter_input_array(INPUT_POST, $donneesFormulaire);
 if (!in_array(false, $donneesDuFormulaire)) {
     $compteUtilisateur = obtenirCompteUtilisateur($donneesDuFormulaire["identifiant"], $donneesDuFormulaire["password"]);
+    $compteEstDesactive = compteUtilisateurEstTemporairementDesactive($compteUtilisateur);
     if ($compteUtilisateur != false) {
         $resultat = password_verify($donneesDuFormulaire["password"], $compteUtilisateur["password"]);
-        $_SESSION["utilisateur"] = $compteUtilisateur;
+        if ($compteEstDesactive != true) {
+            if ($resultat != false) {
+                $_SESSION["utilisateur"] = $compteUtilisateur;
+                $codeUtilisateur = $_SESSION["utilisateur"]["codeUtilisateur"];
+                reinitialisationLeNombreDeTentativesDeConnexion($codeUtilisateur, $compteUtilisateur);
+            } else {
+                $compteUtilisateur = echecDeTentativeDeConnexion($compteUtilisateur);
+            }
+        }
     }
 }
 

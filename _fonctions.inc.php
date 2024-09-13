@@ -10,6 +10,7 @@ include_once './config/_config.inc.php';
  *  
  */
 function gestionnaireDeConnexion() {
+    //LOCAL
     $pdo = new PDO(
             CONFIG["db"]["db_engine"] . ':host=' . CONFIG["db"]["db_host"] . ';dbname=' . CONFIG["db"]["db_name"],
             CONFIG["db"]["db_user"],
@@ -19,6 +20,16 @@ function gestionnaireDeConnexion() {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             )
     );
+    //Production
+//    $pdo = new PDO(
+//            CONFIG["db_prod"]["db_engine"] . ':host=' . CONFIG["db_prod"]["db_host"] . ';dbname=' . CONFIG["db_prod"]["db_name"],
+//            CONFIG["db_prod"]["db_user"],
+//            CONFIG["db_prod"]["db_password"],
+//            array(
+//        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+//        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+//            )
+//    );
     return $pdo;
 }
 
@@ -41,15 +52,15 @@ function obtenirCollectionDeContainers() {
  * @param string $chaineRecherchee la chaine utilisée pour rechercher un ou plusieurs type de containers
  * @return Array collection de containers
  */
-function rechercherCollectionDeContainersParLibelle($chaineRecherchee) {
-    $pdo = gestionnaireDeConnexion();
-    $requeteSql = "select * from typeContainer where libelleTypeContainer like  :chaineRecherchee ";
-    $pdoStatement = $pdo->prepare($requeteSql);
-    $pdoStatement->bindValue(":chaineRecherchee", "%" . $chaineRecherchee . "%");
-    $pdoStatement->execute();
-    $collectionDeContainersParLibelle = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
-    return $collectionDeContainersParLibelle;
-}
+//function rechercherCollectionDeContainersParLibelle($chaineRecherchee) {
+//    $pdo = gestionnaireDeConnexion();
+//    $requeteSql = "select * from typeContainer where libelleTypeContainer like  :chaineRecherchee ";
+//    $pdoStatement = $pdo->prepare($requeteSql);
+//    $pdoStatement->bindValue(":chaineRecherchee", "%" . $chaineRecherchee . "%");
+//    $pdoStatement->execute();
+//    $collectionDeContainersParLibelle = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+//    return $collectionDeContainersParLibelle;
+//}
 
 /**
  * retourne une collection contenant l'ensemble des villes utilisées dans l'application
@@ -63,6 +74,7 @@ function obtenirLaCollectionDesVilles() {
     $collectionDesVilles = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
     return $collectionDesVilles;
 }
+
 
 /**
  * Ajoute une réservation de container
@@ -157,6 +169,8 @@ function obtenirCollectionDeReservationsPourUnClient($codeUtilisateur) {
     return $collectionDeReservationsPourUnClient;
 }
 
+
+
 /**
  * Retourne les données d'une réservation client
  * 
@@ -173,7 +187,7 @@ function obtenirDetailDeUneReservationPourUnClient($codeUtilisateur, $codeReserv
         datediff(reservation.dateFinReservation,reservation.dateDebutReservation) nombreDeJourDeLocation
         FROM reservation,  ville v1, ville v2, typeContainer, reserver  
         WHERE reservation.codeReservation = :codeReservation
-        and reservation.codeUtilisateur= :codeUtilisateur
+        and reservation.codeUtilisateur = :codeUtilisateur
         and reservation.codeVilleMiseDispo = v1.codeVille 
         and reservation.codeVilleRendre = v2.codeVille
         and reservation.codeReservation = reserver.codeReservation
@@ -210,6 +224,7 @@ function obtenirDetailDeUnDevisPourUnClient($codeUtilisateur, $codeReservation) 
     $pdoStatement->closeCursor();
     return $detailDeUnDevisPourUnClient;
 }
+
 
 /**
  * Vérifie l'existence d'un devis associé à une réservation client
@@ -253,6 +268,16 @@ function changementEtatDeUneReservationDeUnUtilisateur($codeUtilisateur, $codeRe
     $pdoStatement->bindParam(':codeUtilisateur', $codeUtilisateur, PDO::PARAM_STR);
     $pdoStatement->bindParam(':codeReservation', $codeReservation, PDO::PARAM_STR);
     $pdoStatement->bindParam(':etat', $etat, PDO::PARAM_STR);
+    $pdoStatement->execute();
+    $pdoStatement->closeCursor();
+}
+
+function changementEtatDeUnDevisDeUnUtilisateur($codeDevis, $valider) {
+    $pdo = gestionnaireDeConnexion();
+    $requeteSql = "update devis set valider = :valider where devis.codeDevis = :codeDevis ";
+    $pdoStatement = $pdo->prepare($requeteSql);
+    $pdoStatement->bindParam(':codeDevis', $codeDevis, PDO::PARAM_STR);
+    $pdoStatement->bindParam(':valider', $valider, PDO::PARAM_STR);
     $pdoStatement->execute();
     $pdoStatement->closeCursor();
 }
@@ -334,6 +359,27 @@ function rechercheReservationSelonCritere($codeUtilisateur, Array $criteres) {
     return $reservationSelonCriteres;
 }
 
+function rechercheContainerSelonCritere($codeUtilisateur, Array $criteres) {
+
+    $pdo = gestionnaireDeConnexion();
+    $criteresMisEnForme = miseEnFormeCriterePourSQL($criteres);
+    if (strlen($criteresMisEnForme) > 0) {
+        $requeteSql = "SELECT typeContainer.*
+            FROM typeContainer, reservation
+            WHERE reservation.codeUtilisateur=:codeUtilisateur
+             " . $criteresMisEnForme;
+        $pdoStatement = $pdo->prepare($requeteSql);
+        $pdoStatement->bindParam(':codeUtilisateur', $codeUtilisateur, PDO::PARAM_STR);
+        $pdoStatement->execute();
+        $containerSelonCriteres = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+
+        $pdoStatement->closeCursor();
+    } else {
+        $containerSelonCriteres = [];
+    }
+    return $containerSelonCriteres;
+}
+
 /**
  * formate une chaine de caractères représentant les critères SQL à intégrer à une requête
  * 
@@ -346,4 +392,56 @@ function miseEnFormeCriterePourSQL(Array $criteres) {
         $criteresSql .= " " . $key . " = '" . $value . "' and";
     }
     return substr($criteresSql, 0, strlen($criteresSql) - 3);
+}
+
+function verificationSaisie(string $checkFinal) {
+    echo suppressionBaliseJavascript($checkFinal);
+    echo strip_tags($checkFinal);
+}
+
+function suppressionBaliseJavascript(string $chaine) {
+    $cleanString = $chaine;
+
+    while (strpos($cleanString, "<script>") != false) {
+        $deb = strpos($cleanString, "<script>");
+        $fin = strpos($cleanString, "</script>");
+
+        $cleanString = substr_replace($cleanString, "", $deb, $fin - $deb + 9);
+    }
+
+    return $cleanString;
+}
+
+function compteUtilisateurEstTemporairementDesactive(array $utilisateur) {
+    $compteEstDesactive = false;
+    $nbTentativeConnexion = $utilisateur["nbTentativeConnexion"];
+    $now = date_create();
+    $dateHeure = date_create($utilisateur["dateHeure"]);
+    if (date_diff($now, $dateHeure)->i < 10 && $nbTentativeConnexion >= 5) {
+        $compteEstDesactive = true;
+    }
+
+
+    return $compteEstDesactive;
+}
+
+function echecDeTentativeDeConnexion(array $utilisateur) {
+    $pdo = gestionnaireDeConnexion();
+    $requeteSql = "update utilisateur"
+            . " set nbTentativeConnexion = nbTentativeConnexion+1, dateHeure=:dateHeure"
+            . " where identifiant=:identifiant";
+    $pdoStatement = $pdo->prepare($requeteSql);
+    $pdoStatement->bindValue(':identifiant', $utilisateur['identifiant'], PDO::PARAM_STR);
+    $pdoStatement->bindValue(':dateHeure', date('Y-m-d H:i:s'), PDO::PARAM_STR);
+    $pdoStatement->execute();
+}
+
+function reinitialisationLeNombreDeTentativesDeConnexion($codeUtilisateur, array $utilisateur) {
+    $pdo = gestionnaireDeConnexion();
+    $requeteSql = "update utilisateur set nbTentativeConnexion = 0 , dateHeure = NULL"
+            . " where identifiant=:identifiant  and codeUtilisateur=:codeUtilisateur";
+    $pdoStatement = $pdo->prepare($requeteSql);
+    $pdoStatement->bindValue(':identifiant', $utilisateur['identifiant'], PDO::PARAM_STR);
+    $pdoStatement->bindValue(':codeUtilisateur', $codeUtilisateur, PDO::PARAM_STR);
+    $pdoStatement->execute();
 }

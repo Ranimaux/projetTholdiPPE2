@@ -1,5 +1,6 @@
 
-<div class="fixed-bottom m-0 p-0 pied">
+<div class="fixed-bottom m-0 p-0" style="background-color: white">
+    <span></span>
     <div class="container">
         <footer  class="m-0 p-0 d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top rounded-1 bg-opacity-75">
             <div class="col-md-4 d-flex align-items-center ">
@@ -26,6 +27,11 @@
                         <img height="50" width='50' src="img/facebook.jpeg">
                     </a>
                 </li>
+                <li class="ms-3">
+                    <a class="text-muted"href="mentionLegal.pdf">
+                        <img height="50" width='50' src="#" alt="CGV">
+                    </a>
+                </li>
             </ul>
 
         </footer>
@@ -36,4 +42,3 @@
 </html>
 <?php
 ob_end_flush();
-

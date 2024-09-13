@@ -2,14 +2,13 @@
 include_once '_debut.inc.php';
 ?>
 
-
 <div class="row">
     <div class="col-3">
-        <?php include_once '_menuReservation.inc.php'; ?>
+        <?php include_once '_menuContainer.inc.php'; ?>
     </div>
     <div class="col-1"></div>
     <div class="col-7 shadow mt-3">
-        <form method="post" action="consultationDesReservationsViaModuleDeRecherche.php">
+        <form method="post" action="consultationContainerViaModuleDeRecherche.php">
             <div class="row mb-3 text-center">
                 <div class="col ">
                     <h2 class="mb-3">
@@ -24,89 +23,67 @@ include_once '_debut.inc.php';
                             <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM3.668 2.501l-.288.646a.847.847 0 0 0 1.479.815l.245-.368a.809.809 0 0 1 1.034-.275.809.809 0 0 0 .724 0l.261-.13a1 1 0 0 1 .775-.05l.984.34c.078.028.16.044.243.054.784.093.855.377.694.801-.155.41-.616.617-1.035.487l-.01-.003C8.274 4.663 7.748 4.5 6 4.5 4.8 4.5 3.5 5.62 3.5 7c0 1.96.826 2.166 1.696 2.382.46.115.935.233 1.304.618.449.467.393 1.181.339 1.877C6.755 12.96 6.674 14 8.5 14c1.75 0 3-3.5 3-4.5 0-.262.208-.468.444-.7.396-.392.87-.86.556-1.8-.097-.291-.396-.568-.641-.756-.174-.133-.207-.396-.052-.551a.333.333 0 0 1 .42-.042l1.085.724c.11.072.255.058.348-.035.15-.15.415-.083.489.117.16.43.445 1.05.849 1.357L15 8A7 7 0 1 1 3.668 2.501Z"/>
                         </svg>
                     </div>
-
-
                 </div>
             </div>
             <div class="row">
                 <div class="col-5">
-                    <input type="checkbox" name="_dateDebutReservation" id="_dateDebutReservation" data-cible="dateDebutReservation" >
-                        <label for="dateDebutReservation">inclure une date de début</label>
+                    <input type="checkbox" name="_libelleTypeContenair" id="_libelleTypeContenair" data-cible="libelleTypeContainer" >
+                        <label for="libelleTypeContenair">inclure le nom du container</label>
                 </div>
                 <div class="col-3"> 
 
-                    <input type="date" class="w-100" disabled  id="dateDebutReservation" name="dateDebutReservation"  >
-                </div>
-            </div>
-
-            <div class="row mt-2">
-                <div class="col-5">
-                    <input type="checkbox" name="_dateFinReservation" id="_dateFinReservation" data-cible="dateFinReservation"  >
-                        <label for="dateFinReservation">inclure une date de fin</label>
-                </div>
-                <div class="col-3"> 
-                    <input type="date" class="w-100"  disabled  id="dateFinReservation" name="dateFinReservation" >
-                </div>
-            </div>
-
-            <div class="row mt-2">
-                <div class="col-5">
-                    <input type="checkbox" name="_dateReservation" id="_dateReservation" data-cible="dateReservation"  >
-                        <label for="dateReservation">inclure une date de réservation</label>
-                </div>
-                <div class="col-3"> 
-                    <input type="date" class="w-100"  disabled  id="dateReservation" name="dateReservation" >
+                    <select class="form-control" disabled id="libelleTypeContainer" name="libelleTypeContainer" placeholder="libelleTypeContainer">
+                        <?php
+                            $listeContainer = obtenirCollectionDeContainers(); //fonction pour obtenir la liste des containers
+                            foreach ($listeContainer as $typeDeContainer):
+                        ?>
+                        <option value="<?php echo $typeDeContainer["libelleTypeContainer"]; ?>"><?php echo $typeDeContainer["libelleTypeContainer"]; ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
             </div>
             
             <div class="row mt-2">
                 <div class="col-5">
-                    <input type="checkbox" name="_codeVilleMiseDispo" id="_codeVilleMiseDispo" data-cible="codeVilleMiseDispo"  >
-                        <label for="villeDepart">Lieu de mise &agrave; disposition</label>
+                    <input type="checkbox" name="_masseEnTonne" id="_masseEnTonne" data-cible="masseEnTonne"  >
+                        <label for="masseEnTonne">inclure une masse en tonne</label>
                 </div>
                 <div class="col-3"> 
-                    <select class="form-control" disabled id="codeVilleMiseDispo" name="codeVilleMiseDispo" placeholder="codeVilleMiseDispo">
-                        <?php
-                            $listeVille = obtenirLaCollectionDesVilles(); //fonction pour obtenir la liste des villes
-                            foreach ($listeVille as $ville):
-                        ?>
-                        <option value="<?php echo $ville["codeVille"]; ?>"><?php echo $ville["nomVille"]; ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <input type="text" class="w-100"  disabled  id="masseEnTonne" name="masseEnTonne"
+                           name="masseEnTonne" pattern="/^[0-9\.]{0,10}$/" title="Veilliez saisir correctement une masse, par exemple : 1.402">
                 </div>
             </div>
-
+            
             <div class="row mt-2">
                 <div class="col-5">
-                    <input type="checkbox" name="_codeVilleRendre" id="_codeVilleRendre" data-cible="codeVilleRendre"  >
-                        <label for="villeArrivee">Lieu de restitution</label>
+                    <input type="checkbox" name="_volumeEnMetreCube" id="_volumeEnMetreCube" data-cible="volumeEnMetreCube"  >
+                        <label for="volumeEnMetreCube">inclure un volume en mettre cube</label>
                 </div>
                 <div class="col-3"> 
-                    <select class="form-control" disabled id="codeVilleRendre" name="codeVilleRendre" placeholder="codeVilleRendre">
-                        <?php
-                            $listeVille = obtenirLaCollectionDesVilles(); //fonction pour obtenir la liste des villes
-                            foreach ($listeVille as $ville):
-                        ?>
-                        <option value="<?php echo $ville["codeVille"]; ?>"><?php echo $ville["nomVille"]; ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <input type="text" class="w-100"  disabled  id="volumeEnMetreCube"  name="volumeEnMetreCube"
+                           name="volumeEnMetreCube" pattern="^[0-9\.]{0,7}$" title="Veilliez saisir correctement le volume, par exemple : 14.00">
                 </div>
             </div>
+            
+            <div class="row mt-2">
+                <div class="col-5">
+                    <input type="checkbox" name="_tarifJour" id="_tarifJour" data-cible="tarifJour"  >
+                        <label for="tarifJour">inclure un tarif du jour</label>
+                </div>
+                <div class="col-3"> 
+                    <input type="text" class="w-100"  disabled  id="tarifJour" name="tarifJour" 
+                           pattern="^[0-9\.]{0,8}$" title="Veilliez saisir correctement, par exemple : 10.45">
+                </div>
+            </div>
+            
             <div class="row m-5">
                 <div class="col text-center">
                     <button class="btn btn-outline-secondary" type="submit"   id="button-addon 2 "> Rechercher</button>
                 </div>
             </div>
-
+            
         </form>
     </div>
-
-
-
-</div>
-
-</div>
-
 </div>
 
 <script>

@@ -8,6 +8,8 @@ include_once '_debut.inc.php';
  */
 $regex_date = "/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/";
 
+$regex_ville ="/^[0-9]{1,3}$/";
+
 $filtreAppliqueAuFormulaire = array(
     'dateDebutReservation' => array('filter' => FILTER_VALIDATE_REGEXP,
         'options' => array("regexp" => $regex_date)),
@@ -15,6 +17,10 @@ $filtreAppliqueAuFormulaire = array(
         'options' => array("regexp" => $regex_date)),
     'dateReservation' => array('filter' => FILTER_VALIDATE_REGEXP,
         'options' => array("regexp" => $regex_date)),
+    'codeVilleMiseDispo' => array('filter' => FILTER_VALIDATE_REGEXP,
+        'options' => array("regexp" => $regex_ville)),
+    'codeVilleRendre' => array('filter' => FILTER_VALIDATE_REGEXP,
+        'options' => array("regexp" => $regex_ville)),
 );
 
 $donneesDuFormulaire = filter_input_array(INPUT_POST, $filtreAppliqueAuFormulaire);
@@ -65,14 +71,14 @@ if ($donneesDuFormulaire != null) {
             <div class="col-7 offset-4 shadow mt-3">
                 <div class="card m-4">
                     <div class="card-header text-center alert-success " >
-                        Reservation du <?php echo dateAuFormatJourMoisAnnee($uneReservation["dateReservation"]); ?>
+                        Reservation du <?php echo verificationSaisie(dateAuFormatJourMoisAnnee($uneReservation["dateReservation"])); ?>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
                                 Mise &agrave; disposition le :
                                 <span class="fw-bold ">
-                                    <?php echo dateAuFormatJourMoisAnnee($uneReservation["dateDebutReservation"]); ?> 
+                                    <?php echo verificationSaisie(dateAuFormatJourMoisAnnee($uneReservation["dateDebutReservation"])); ?> 
                                 </span>
                                 &agrave;
                                 <span class="fw-bold text-uppercase ">
@@ -84,11 +90,11 @@ if ($donneesDuFormulaire != null) {
                             <div class="col">
                                 Restitution le :
                                 <span class="fw-bold ">
-                                    <?php echo dateAuFormatJourMoisAnnee($uneReservation["dateFinReservation"]); ?> 
+                                    <?php echo verificationSaisie(dateAuFormatJourMoisAnnee($uneReservation["dateFinReservation"])); ?> 
                                 </span>
                                 &agrave;
                                 <span class="fw-bold text-uppercase ">
-                                    <?php echo $uneReservation["nomVilleRendre"]; ?>
+                                    <?php echo verificationSaisie($uneReservation["nomVilleRendre"]); ?>
                                 </span>
                             </div>
                         </div>
@@ -98,7 +104,7 @@ if ($donneesDuFormulaire != null) {
                                 Volume estim&eacute; :
                                 <span class="fw-bold ">
                                     <?php
-                                    echo ($uneReservation["volumeEstime"] === 0) ? $uneReservation["volumeEstime"] : "<i>Non renseigné</i>";
+                                    echo verificationSaisie(($uneReservation["volumeEstime"] === 0) ? $uneReservation["volumeEstime"] : "<i>Non renseigné</i>");
                                     ?>
                             </div>
                         </div>
@@ -106,7 +112,7 @@ if ($donneesDuFormulaire != null) {
                         <div class="row mt-4 ">
                             <div class="btn-group text-center" role="group">
                                 <div class="col m-2 ">
-                                    <a  href="detailDeUneReservation.php?codeReservation=<?php echo $uneReservation["codeReservation"] ?>" 
+                                    <a  href="detailDeUneReservation.php?codeReservation=<?php echo verificationSaisie($uneReservation["codeReservation"]) ?>" 
                                         class="btn btn-primary  w-75 me-2">
                                         détails
                                     </a>
@@ -114,7 +120,7 @@ if ($donneesDuFormulaire != null) {
                                 <div class="col m-2 ">
                                     <form action="traitement.changementEtatDeReservation.php" method="post">
                                         <input type="hidden" name="codeReservation" 
-                                               value="<?php echo $uneReservation["codeReservation"] ?>">
+                                               value="<?php echo verificationSaisie($uneReservation["codeReservation"]) ?>">
                                                    <?php
                                                    switch ($uneReservation["etat"]) :
 

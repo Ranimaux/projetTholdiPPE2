@@ -67,11 +67,11 @@
   padding:8px;
 }
 
-.pied {
+#pied {
     display: none;
 }
 
-.pied:hover + .pied{
+#pied:hover + .pied{
     display: inline;
 }
 
