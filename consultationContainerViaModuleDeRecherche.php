@@ -65,7 +65,15 @@ if ($donneesDuFormulaire != null) {
     if (isset($collectionContainers) && count($collectionContainers) > 0):
         ?>
         <?php
-        foreach ($collectionContainers as $unContainer) :
+        $uniqueContainers = [];
+        foreach ($collectionContainers as $unContainer) {
+            $key = $unContainer["codeTypeContainer"];
+            
+            if (!isset($uniqueContainers[$key])) {
+                $uniqueContainers[$key] = $unContainer;
+            }
+        }
+        foreach ($uniqueContainers as $unContainer) :
             ?>
             <div class="col-7 offset-4 shadow mt-3">
                 <div class="card m-4">

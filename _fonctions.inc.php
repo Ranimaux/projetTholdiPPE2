@@ -364,7 +364,7 @@ function rechercheContainerSelonCritere($codeUtilisateur, Array $criteres) {
     $pdo = gestionnaireDeConnexion();
     $criteresMisEnForme = miseEnFormeCriterePourSQL($criteres);
     if (strlen($criteresMisEnForme) > 0) {
-        $requeteSql = "SELECT typeContainer.*
+        $requeteSql = "SELECT DISTINCT typeContainer.*
             FROM typeContainer, reservation
             WHERE reservation.codeUtilisateur=:codeUtilisateur
              " . $criteresMisEnForme;
