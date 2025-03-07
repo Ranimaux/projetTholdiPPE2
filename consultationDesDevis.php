@@ -74,13 +74,13 @@ $euro = " €";
                                     Montant du devis :
                                     <span class="fw-bold ">
                                         <?php
-                                        $total_ht = 0;
+                                        $totalHT = 0;
                                         foreach ($collectionDeUneReservations as $uneCollection) {
-                                            $total_ht += $uneCollection["montantLigneDeReservation"];
+                                            $totalHT += $uneCollection["montantLigneDeReservation"];
                                         }
                                         $montantDevis = $unDevis["montantDevis"];
-                                        $tva = $total_ht * 0.20;
-                                        $montantFinal = $total_ht + $tva;
+                                        $tva = $totalHT * 0.20;
+                                        $montantFinal = $totalHT + $tva;
                                         echo $montantFinal, iconv("UTF-8", "ISO-8859-1//TRANSLIT", $euro);
                                         ?>
                                 </div>

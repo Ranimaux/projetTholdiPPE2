@@ -79,7 +79,7 @@ for ($i = 0; $i < count($header); $i++) {
 $pdf->Ln();
 
 //tableau de lignes de réservation
-$total_ht = 0;
+$totalHT = 0;
 $pdf->SetFillColor(255, 0, 0);
 $pdf->SetTextColor(0, 0, 0);
 $pdf->SetDrawColor(128, 0, 0);
@@ -92,11 +92,11 @@ foreach ($collectionDeUneReservations as $uneCollection) {
     $pdf->Cell($w[3], 10, $uneCollection["nombreDeJourDeLocation"], 1, 0, 'C');
     $pdf->Cell($w[4], 10, $uneCollection["montantLigneDeReservation"], 1, 1, 'C');
 
-    $total_ht += $uneCollection["montantLigneDeReservation"];
+    $totalHT += $uneCollection["montantLigneDeReservation"];
 }
 $pdf->Ln();
-$tva = $total_ht * 0.20;
-$prix_final = $total_ht + $tva;
+$tva = $totalHT * 0.20;
+$prix_final = $totalHT + $tva;
 
 $pdf->Ln(5);
 
@@ -122,7 +122,7 @@ $pdf->SetDrawColor(128, 0, 0);
 $pdf->SetLineWidth(.3);
 $pdf->ln();
 //Montant HT
-$pdf->Cell($z[0], 20, 'Total hors taxe: ' . $total_ht . "$", 1, 0);
+$pdf->Cell($z[0], 20, 'Total hors taxe: ' . $totalHT . "$", 1, 0);
 //Montant TVA
 $pdf->Cell($z[1], 20, 'TVA (20%): ' . $tva . "$", 1, 0);
 //Montant Final

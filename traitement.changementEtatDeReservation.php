@@ -111,7 +111,7 @@ switch ($action) {
         $pdf->Ln();
 
         //tableau de lignes de réservation
-        $total_ht = 0;
+        $totalHT = 0;
         $pdf->SetFillColor(255, 0, 0);
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetDrawColor(128, 0, 0);
@@ -120,15 +120,19 @@ switch ($action) {
 
             $pdf->Cell($w[0], 10, $uneCollection["libelleTypeContainer"], 1, 0, 'C');
             $pdf->Cell($w[1], 10, $uneCollection["qteReserver"], 1, 0, 'C');
-            $pdf->Cell($w[2], 10, $uneCollection["tarifJour"], 1, 0, 'C');
+            $pdf->Cell($w[2], 10, $uneCollection["tarifJour"] . ' ' . chr(128), 1, 0, 'C');
             $pdf->Cell($w[3], 10, $uneCollection["nombreDeJourDeLocation"], 1, 0, 'C');
-            $pdf->Cell($w[4], 10, $uneCollection["montantLigneDeReservation"], 1, 1, 'C');
+            $montantTotal = $uneCollection["montantLigneDeReservation"] * $uneCollection["nombreDeJourDeLocation"];
+            $totalHT = $montantTotal + $totalHT;
+            $pdf->Cell($w[4], 10, $totalHT . ' ' . chr(128), 1, 1, 'C');
+            
 
-            $total_ht += $uneCollection["montantLigneDeReservation"];
         } 
+        
+        
         $pdf->Ln();
-        $tva = $total_ht * 0.20;
-        $prix_final = $total_ht + $tva;
+        $tva = $totalHT * 0.20;
+        $prix_final = $totalHT + $tva;
 
         $pdf->Ln(5);
 
@@ -140,25 +144,25 @@ switch ($action) {
 
         $pdf->SetTextColor(255);
         $pdf->SetDrawColor(128, 0, 0);
-        $pdf->SetLineWidth(.10);
-        $pdf->SetFont('Times', 'B');
+        $pdf->SetLineWidth(.20);
+        $pdf->SetFont('Arial', 'B', 12);
 
-        $z = array(50, 50, 50);
+        $z = array(60, 60, 60);
 
         for ($i = 0; $i < count($headerPrice); $i++) {
             $pdf->Cell($z[$i], 20, $headerPrice[$i], 1, 0, 'C', true);
         }
-        $pdf->SetFillColor(0, 0, 0);
+        $pdf->SetFillColor(255, 0, 0);
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetDrawColor(128, 0, 0);
         $pdf->SetLineWidth(.3);
         $pdf->ln();
         //Montant HT
-        $pdf->Cell($z[0], 20, 'Total hors taxe: ' . $total_ht, 1, 0);
+        $pdf->Cell($z[0], 20, 'Total hors taxe: ' . $totalHT . ' ' . chr(128), 1, 0, 'R');
         //Montant TVA
-        $pdf->Cell($z[1], 20, 'TVA (20%): ' . $tva, 1, 0);
+        $pdf->Cell($z[1], 20, 'TVA (20%): ' . $tva . ' ' . chr(128), 1, 0, 'C');
         //Montant Final
-        $pdf->Cell($z[2], 20, 'Prix final du devis: ' . $prix_final, 1, 0, 'C');
+        $pdf->Cell($z[2], 20, 'Prix taxe: ' . $prix_final . ' ' . chr(128), 1, 0, 'C');
 
         $pdf->Output();
 
