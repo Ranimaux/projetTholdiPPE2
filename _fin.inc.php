@@ -11,28 +11,29 @@
                 <span class="text-muted">© 2022 Tholdi Company, Inc</span>
             </div>
 
-            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-                <li class="ms-3"><a class="text-muted" href="#">
+            <div class="nav col-md-4 justify-content-end list-unstyled d-flex">
+                <ul class="ms-3">
+                    <li class="text-muted" href="#">
                         <img class="" height="50" width='50'
-                             src="img/twitter.png">
-                    </a>
-                </li>
-                <li class="ms-3">
-                    <a class="text-muted" href="#">
+                             src="img/Xlogo.png">
+                    </li>
+                </ul>
+                <ul class="ms-3">
+                    <li class="text-muted" href="#">
                         <img height="50" width='50' src="img/insta.jpeg">
-                    </a>
-                </li>
-                <li class="ms-3">
-                    <a class="text-muted" href="#">
+                    </li>
+                </ul>
+                <ul class="ms-3">
+                    <li class="text-muted" href="#">
                         <img height="50" width='50' src="img/facebook.jpeg">
-                    </a>
-                </li>
-                <li class="ms-3">
-                    <a class="text-muted"href="mentionLegal.pdf">
+                    </li>
+                </ul>
+                <ul class="ms-3">
+                    <li class="text-muted"href="mentionLegal.pdf">
                         <img height="50" width='50' src="#" alt="CGV">
-                    </a>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
 
         </footer>
     </div></div>
