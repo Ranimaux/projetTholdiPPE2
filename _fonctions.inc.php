@@ -394,15 +394,15 @@ function miseEnFormeCriterePourSQL(Array $criteres) {
     return substr($criteresSql, 0, strlen($criteresSql) - 3);
 }
 
-function verificationSaisie(string $checkFinal) {
-    echo suppressionBaliseJavascript($checkFinal);
-    echo strip_tags($checkFinal);
+function verificationSaisie(string $checkFinal): string {
+    $checkFinal = suppressionBaliseJavascript($checkFinal);
+    return strip_tags($checkFinal);
 }
 
-function suppressionBaliseJavascript(string $chaine) {
+function suppressionBaliseJavascript(string $chaine): string {
     $cleanString = $chaine;
 
-    while (strpos($cleanString, "<script>") != false) {
+    while (strpos($cleanString, "<script>") !== false) {
         $deb = strpos($cleanString, "<script>");
         $fin = strpos($cleanString, "</script>");
 

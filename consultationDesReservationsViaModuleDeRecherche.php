@@ -71,14 +71,14 @@ if ($donneesDuFormulaire != null) {
             <div class="col-7 offset-4 shadow mt-3">
                 <div class="card m-4">
                     <div class="card-header text-center alert-success " >
-                        Reservation du <?php echo verificationSaisie(dateAuFormatJourMoisAnnee($uneReservation["dateReservation"])); ?>
+                        Reservation du <?php echo htmlspecialchars(verificationSaisie(dateAuFormatJourMoisAnnee($uneReservation["dateReservation"]))); ?>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
                                 Mise &agrave; disposition le :
                                 <span class="fw-bold ">
-                                    <?php echo verificationSaisie(dateAuFormatJourMoisAnnee($uneReservation["dateDebutReservation"])); ?> 
+                                    <?php echo htmlspecialchars((dateAuFormatJourMoisAnnee($uneReservation["dateDebutReservation"]))); ?> 
                                 </span>
                                 &agrave;
                                 <span class="fw-bold text-uppercase ">
@@ -90,11 +90,11 @@ if ($donneesDuFormulaire != null) {
                             <div class="col">
                                 Restitution le :
                                 <span class="fw-bold ">
-                                    <?php echo verificationSaisie(dateAuFormatJourMoisAnnee($uneReservation["dateFinReservation"])); ?> 
+                                    <?php echo htmlspecialchars((verificationSaisie(dateAuFormatJourMoisAnnee($uneReservation["dateFinReservation"])))); ?> 
                                 </span>
                                 &agrave;
                                 <span class="fw-bold text-uppercase ">
-                                    <?php echo verificationSaisie($uneReservation["nomVilleRendre"]); ?>
+                                    <?php echo htmlspecialchars(verificationSaisie($uneReservation["nomVilleRendre"])); ?>
                                 </span>
                             </div>
                         </div>

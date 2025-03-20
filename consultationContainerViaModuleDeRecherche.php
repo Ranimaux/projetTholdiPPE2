@@ -78,18 +78,18 @@ if ($donneesDuFormulaire != null) {
             <div class="col-7 offset-4 shadow mt-3">
                 <div class="card m-4">
                     <div class="card-header text-center alert-success " >
-                        Nom Container : <?php echo verificationSaisie($unContainer["libelleTypeContainer"]); ?>
+                        Nom Container : <?php echo htmlspecialchars(verificationSaisie($unContainer["libelleTypeContainer"])); ?>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
                                 Masse du container en tonne  :
                                 <span class="fw-bold ">
-                                    <?php echo verificationSaisie($unContainer["masseEnTonne"]); ?> 
+                                    <?php echo htmlspecialchars(verificationSaisie($unContainer["masseEnTonne"])); ?> 
                                 </span>
                                 Volume du container en cube
                                 <span class="fw-bold text-uppercase ">
-                                    <?php echo verificationSaisie($unContainer["volumeEnMetreCube"]); ?> 
+                                    <?php echo htmlspecialchars(verificationSaisie($unContainer["volumeEnMetreCube"])); ?> 
                                 </span>
                             </div>
                         </div>
@@ -99,7 +99,7 @@ if ($donneesDuFormulaire != null) {
                                 Prix tarif par jour :
                                 <span class="fw-bold ">
                                     <?php
-                                    echo verificationSaisie($unContainer["tarifJour"]);
+                                    echo htmlspecialchars(verificationSaisie($unContainer["tarifJour"]));
                                     ?>
                             </div>
                         </div>
