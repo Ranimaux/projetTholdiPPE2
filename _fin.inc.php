@@ -1,5 +1,5 @@
 
-<div class="fixed-bottom m-0 p-0" style="background-color: white">
+<div class="sticky-bottom m-0 p-0" style="background-color: white">
     <span></span>
     <div class="container">
         <footer  class="m-0 p-0 d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top rounded-1 bg-opacity-75">
@@ -13,25 +13,25 @@
 
             <div class="nav col-md-4 justify-content-end list-unstyled d-flex">
                 <ul class="ms-3">
-                    <li class="text-muted" href="#">
+                    <a class="text-muted" href="#">
                         <img class="" height="50" width='50'
                              src="img/Xlogo.png">
-                    </li>
+                    </a>
                 </ul>
                 <ul class="ms-3">
-                    <li class="text-muted" href="#">
+                    <a class="text-muted" href="#">
                         <img height="50" width='50' src="img/insta.jpeg">
-                    </li>
+                    </a>
                 </ul>
                 <ul class="ms-3">
-                    <li class="text-muted" href="#">
+                    <a class="text-muted" href="#">
                         <img height="50" width='50' src="img/facebook.jpeg">
-                    </li>
+                    </a>
                 </ul>
                 <ul class="ms-3">
-                    <li class="text-muted"href="mentionLegal.pdf">
+                    <a class="text-muted"href="mentionLegal.pdf">
                         <img height="50" width='50' src="#" alt="CGV">
-                    </li>
+                    </a>
                 </ul>
             </div>
 
