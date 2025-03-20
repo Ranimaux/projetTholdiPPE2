@@ -104,7 +104,7 @@ if ($donneesDuFormulaire != null) {
                                 Volume estim&eacute; :
                                 <span class="fw-bold ">
                                     <?php
-                                    echo verificationSaisie(($uneReservation["volumeEstime"] === 0) ? $uneReservation["volumeEstime"] : "<i>Non renseigné</i>");
+                                    echo verificationSaisie(!empty($uneReservation["volumeEstime"]) ? $uneReservation["volumeEstime"] : "<i>Non renseigné</i>");
                                     ?>
                             </div>
                         </div>
