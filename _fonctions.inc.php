@@ -274,10 +274,10 @@ function changementEtatDeUneReservationDeUnUtilisateur($codeUtilisateur, $codeRe
 
 function changementEtatDeUnDevisDeUnUtilisateur($codeDevis, $valider) {
     $pdo = gestionnaireDeConnexion();
-    $requeteSql = "update devis set valider = :valider where devis.codeDevis = :codeDevis ";
+    $requeteSql = "UPDATE devis SET valider = :valider WHERE codeDevis = :codeDevis";
     $pdoStatement = $pdo->prepare($requeteSql);
-    $pdoStatement->bindParam(':codeDevis', $codeDevis, PDO::PARAM_STR);
-    $pdoStatement->bindParam(':valider', $valider, PDO::PARAM_STR);
+    $pdoStatement->bindValue(':codeDevis', $codeDevis, PDO::PARAM_INT);
+    $pdoStatement->bindValue(':valider', $valider, PDO::PARAM_STR);
     $pdoStatement->execute();
     $pdoStatement->closeCursor();
 }

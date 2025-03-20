@@ -2,7 +2,6 @@
 
 session_start();
 include_once '_fonctions.inc.php';
-
 /**
  * VERIFICATION DES DONNES DU FORMULAIRE
  */
@@ -39,8 +38,6 @@ switch ($action) {
         changementEtatDeUnDevisDeUnUtilisateur($codeDevis, "O");
         header("location: consultationDesDevis.php");
         break;
-
-    
 
     default:
         break;
