@@ -49,7 +49,6 @@ switch ($action) {
         $collectionDeUneReservations = obtenirDetailDeUneReservationPourUnClient($codeUtilisateur, $codeReservation);
         $detailDevis = obtenirDetailDeUnDevisPourUnClient($codeUtilisateur, $codeReservation);
 
-//        var_dump($collectionDeUneReservations);
         $codeDevis = $detailDevis['codeDevis'];
         $montantDevis = $detailDevis['montantDevis'];
         require('fpdf184/fpdf.php');
@@ -117,25 +116,23 @@ switch ($action) {
         $pdf->SetDrawColor(128, 0, 0);
         $pdf->SetLineWidth(.3);
         foreach ($collectionDeUneReservations as $uneCollection) {
-
+            $montantLigne = $uneCollection["qteReserver"] * $uneCollection["tarifJour"] * $uneCollection["nombreDeJourDeLocation"];
+            $totalHT += $montantLigne;
             $pdf->Cell($w[0], 10, $uneCollection["libelleTypeContainer"], 1, 0, 'C');
             $pdf->Cell($w[1], 10, $uneCollection["qteReserver"], 1, 0, 'C');
             $pdf->Cell($w[2], 10, $uneCollection["tarifJour"] . ' ' . chr(128), 1, 0, 'C');
             $pdf->Cell($w[3], 10, $uneCollection["nombreDeJourDeLocation"], 1, 0, 'C');
-            $montantTotal = $uneCollection["montantLigneDeReservation"] * $uneCollection["nombreDeJourDeLocation"];
-            $totalHT = $montantTotal + $totalHT;
-            $pdf->Cell($w[4], 10, $totalHT . ' ' . chr(128), 1, 1, 'C');
-            
+            $pdf->Cell($w[4], 10, $montantLigne . ' ' . chr(128), 1, 1, 'C');
+        }
 
-        } 
-        
-        
+        // Cacul prix final hors taxe, calcul TVA et prix final taxe
         $pdf->Ln();
         $tva = $totalHT * 0.20;
         $prix_final = $totalHT + $tva;
 
         $pdf->Ln(5);
 
+        // Affichage dans un tableau des différents prix final
         $pdf->SetXY(10, 170);
         $headerPrice = array("Montant Hors Taxe", "Montant TVA", "Montant Final");
         $pdf->SetFont('Arial', 'B', 12);
@@ -166,7 +163,7 @@ switch ($action) {
 
         $pdf->Output();
 
-            echo "<script>
+        echo "<script>
             let a= document.createElement('a');
             a.target= '_blank';
             a.href= '/" . DIR_APP . "/devis.php';
