@@ -38,7 +38,9 @@ include_once '_debut.inc.php';
     $collectionDeReservations = obtenirCollectionDeReservationsPourUnClient($codeUtilisateur);
     if (count($collectionDeReservations) > 0):
         ?>
-
+        <?php usort($collectionDeReservations, function($a, $b) {
+            return strtotime($b["dateReservation"]) - strtotime($a["dateReservation"]);
+        }); ?>
         <?php
         foreach ($collectionDeReservations as $uneReservation) :
             ?>

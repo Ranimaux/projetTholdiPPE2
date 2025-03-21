@@ -2,12 +2,18 @@
 # Application THOLDI
 
 ## Application de gestion des réservations
-v0.4.0
+v0.10.0
 
 Authentification / Déconnection OK
 Effectuer une reservation OK
 Consulter ses réservations OK
 Rechercher une réservation selon critères (3 seuls implémentés) OK
+Consulter Container OK
+Rechercher un container selon critère OK (4 implémenter) mid OK (doublure)
+Mention légal ok
+Création devis ok 
+Consultation devis ok
+Validation devis ok
 
 
 ## INSTALLATION DE L'APPLICATION SOUS LINUX 

@@ -128,46 +128,27 @@ $euro = " €";
 
                                     </div>
                                     <div class = "col m-2 ">
-                                        <form action = "traitement.changementEtatDeDevis.php" method = "post">
-                                            <input type = "hidden" name = "codeDevis"
-                                                   value = "<?php echo $unDevis["codeDevis"] ?>">
-                                                       <?php
-                                                       switch ($unDevis["valider"]) :
+                                        <form action="traitement.changementEtatDeDevis.php" method="post">
+                                            <input type="hidden" name="codeDevis" value="<?php echo $unDevis["codeDevis"] ?>">
 
+                                            <?php switch ($unDevis["valider"]) : 
+                                                case "": ?>
+                                                    <button type="submit" name="action" value="annulation" class="btn btn-danger w-75">Annuler votre Devis</button>
+                                                    <br><br>
+                                                    <button type="submit" name="action" value="validation" class="btn btn-primary w-75">Valider votre Devis</button>
+                                                    <?php break;
 
+                                                case "O": ?>
+                                                    <button class="btn btn-primary w-75" disabled>Devis Validé</button>
+                                                    <?php break;
 
+                                                case "N": ?>
+                                                    <button class="btn btn-secondary w-75" disabled>Devis annulé</button>
+                                                    <?php break;
 
-
-                                                           case "":
-                                                               ?>
-                                                        <input type="hidden" name="action" value="annulation" />
-                                                        <button type="submit" class="btn btn-danger w-75" >Annuler votre Devis</button>
-                                                        <br></br>
-                                                        <input type="hidden" name="action" value="validation" />
-                                                        <button type="submit" class="btn btn-primary w-75">Valider votre Devis</button>
-                                                        <?PHP
-                                                        break;
-
-                                                    case "O":
-                                                        ?>
-                                                        <input type="hidden" name="action" value="valider" />
-                                                        <button class="btn btn-primary w-75" disabled>Devis Validé</button>
-
-                                                        <?php
-                                                        break;
-
-                                                    case "N":
-                                                        ?>
-                                                        <button class="btn btn-secondary w-75" disabled>Devis annulé</button>                                                     
-
-                                                        <?php
-                                                        break;
-
-                                                    default:
-                                                        break;
-                                                endswitch;
-                                                ?>
-
+                                                default:
+                                                    break;
+                                            endswitch; ?>
                                         </form>
                                     </div>
                                 </div>

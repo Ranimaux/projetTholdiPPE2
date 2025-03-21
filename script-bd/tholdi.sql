@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : service_mysql
--- Généré le : mar. 14 mai 2024 à 12:54
+-- Généré le : jeu. 20 mars 2025 à 11:50
 -- Version du serveur : 8.0.33
 -- Version de PHP : 8.1.19
 
@@ -20,6 +20,31 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `tholdi_reservation_appli_resa_web`
 --
+
+DELIMITER $$
+--
+-- Procédures
+--
+CREATE DEFINER=`root`@`%` PROCEDURE `GetCompteUtilisateur` (IN `identifiant` CHAR(10))   BEGIN
+    SELECT 
+        utilisateur.*
+    FROM utilisateur
+    WHERE utilisateur.identifiant = identifiant;
+END$$
+
+CREATE DEFINER=`root`@`%` PROCEDURE `GetReservationsForClient` (IN `codeUtilisateur` INT)   BEGIN
+    SELECT 
+        reservation.*, 
+        v1.nomVille AS nomVilleMiseDispo, 
+        v2.nomVille AS nomVilleRendre 
+    FROM reservation
+    JOIN ville v1 ON reservation.codeVilleMiseDispo = v1.codeVille
+    JOIN ville v2 ON reservation.codeVilleRendre = v2.codeVille
+    WHERE reservation.codeUtilisateur = codeUtilisateur
+    ORDER BY reservation.dateReservation DESC;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -41,8 +66,16 @@ CREATE TABLE `devis` (
 --
 
 INSERT INTO `devis` (`codeDevis`, `dateDevis`, `montantDevis`, `volume`, `nbContainers`, `valider`) VALUES
-(7, '2024-05-07', 17262.00, 1500, 5, 'O'),
-(8, '2024-05-14', 3486.00, 2000, 7, 'O');
+(7, '2024-05-07', 17262.00, 1500, 5, 'F'),
+(8, '2024-05-14', 3486.00, 2000, 7, 'F'),
+(9, '2024-05-23', 592.00, 500, 1, 'O'),
+(10, '2024-10-15', 2275.00, 50, 5, 'O'),
+(11, '2024-10-15', 13516.00, 400, 6, 'O'),
+(12, '2024-10-15', 5538.00, 500, 3, 'O'),
+(13, '2025-03-20', 4810.00, 200, 5, 'O'),
+(14, '2025-03-20', 1924.00, 200, 2, 'O'),
+(16, '2025-03-20', 1248.00, 10, 2, 'O'),
+(17, '2025-03-20', 7104.00, 1, 8, 'N');
 
 -- --------------------------------------------------------
 
@@ -289,7 +322,35 @@ CREATE TABLE `reservation` (
 INSERT INTO `reservation` (`codeReservation`, `dateDebutReservation`, `dateFinReservation`, `dateReservation`, `volumeEstime`, `codeDevis`, `codeVilleMiseDispo`, `codeVilleRendre`, `codeUtilisateur`, `etat`) VALUES
 (1, '2024-02-01', '2024-04-04', '2024-01-09', 1500, 7, '02', '04', 1, 'Demande de réservation validée'),
 (2, '2024-04-01', '2024-02-01', '2024-01-09', 1500, NULL, '02', '04', 1, 'Annulé'),
-(5, '2024-05-20', '2024-05-27', '2024-05-14', 2000, 8, '04', '04', 1, 'Demande de réservation validée');
+(5, '2024-05-20', '2024-05-27', '2024-05-14', 2000, 8, '04', '04', 1, 'Demande de réservation validée'),
+(6, '2024-05-29', '2024-06-06', '2024-05-23', 500, 9, '01', '01', 1, 'Demande de réservation validée'),
+(7, '2024-10-16', '2024-10-23', '2024-10-15', 50, 10, '01', '02', 1, 'Demande de réservation validée'),
+(8, '2024-10-30', '2024-11-30', '2024-10-15', 400, 11, '01', '06', 1, 'Demande de réservation validée'),
+(9, '2024-10-25', '2024-11-20', '2024-10-15', 500, 12, '01', '03', 1, 'Demande de réservation validée'),
+(10, '2025-03-27', '2025-04-09', '2025-03-20', 200, 13, '01', '04', 1, 'Demande de réservation validée'),
+(11, '2025-03-27', '2025-04-09', '2025-03-20', 200, 14, '02', '01', 1, 'Demande de réservation validée'),
+(12, '2025-03-21', '2025-04-03', '2025-03-20', 200, NULL, '03', '01', 1, 'Demande de réservation validée'),
+(13, '2025-03-22', '2025-03-29', '2025-03-20', 200, NULL, '01', '02', 1, 'Demande de réservation validée'),
+(14, '2025-03-26', '2025-04-08', '2025-03-20', 10, 16, '04', '01', 1, 'Demande de réservation validée'),
+(15, '2025-03-28', '2025-04-09', '2025-03-20', 1, 17, '07', '01', 1, 'Demande de réservation validée');
+
+--
+-- Déclencheurs `reservation`
+--
+DELIMITER $$
+CREATE TRIGGER `insertReservation` BEFORE INSERT ON `reservation` FOR EACH ROW BEGIN
+    IF NEW.dateDebutReservation < CURRENT_DATE() THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = "Impossible d'enregistrer une réservation dans le passé.";
+    END IF;
+    
+    IF NEW.dateDebutReservation > NEW.dateFinReservation THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = "Impossible d'enregistrer une réservation dont la date de début est supérieure à la date de fin.";
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -313,7 +374,19 @@ INSERT INTO `reserver` (`codeReservation`, `codeTypeContainer`, `qteReserver`) V
 (2, 'OTOP', 2),
 (2, 'RE20', 3),
 (5, 'FLAT', 2),
-(5, 'REEF', 5);
+(5, 'REEF', 5),
+(6, 'FLAT', 1),
+(7, 'OTOP', 5),
+(8, 'FLAT', 4),
+(8, 'REEF', 2),
+(9, 'FLAT', 2),
+(9, 'OTOP', 1),
+(10, 'FLAT', 5),
+(11, 'FLAT', 2),
+(12, 'FLAT', 5),
+(13, 'REEF', 5),
+(14, 'RE20', 2),
+(15, 'FLAT', 8);
 
 -- --------------------------------------------------------
 
@@ -494,13 +567,13 @@ ALTER TABLE `ville`
 -- AUTO_INCREMENT pour la table `devis`
 --
 ALTER TABLE `devis`
-  MODIFY `codeDevis` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `codeDevis` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT pour la table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `codeReservation` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `codeReservation` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT pour la table `utilisateur`

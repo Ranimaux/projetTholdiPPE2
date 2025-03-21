@@ -131,8 +131,7 @@ function insererUneLigneDeReservation($codeReservation, $codeTypeContainer, $qua
 function obtenirCompteUtilisateur($identifiant) {
     $compteExistant = false;
     $pdo = gestionnaireDeConnexion();
-    $requeteSql = "SELECT * FROM utilisateur "
-            . " WHERE identifiant=:identifiant ";
+    $requeteSql = "CALL GetCompteUtilisateur(:identifiant)";
     $pdoStatement = $pdo->prepare($requeteSql);
     $pdoStatement->bindParam(':identifiant', $identifiant, PDO::PARAM_STR);
     $pdoStatement->execute();
@@ -154,13 +153,7 @@ function obtenirCompteUtilisateur($identifiant) {
 function obtenirCollectionDeReservationsPourUnClient($codeUtilisateur) {
 
     $pdo = gestionnaireDeConnexion();
-    $requeteSql = "SELECT reservation.*, v1.nomVille as nomVilleMiseDispo, v2.nomVille as nomVilleRendre 
-        FROM reservation, ville v1, ville v2  
-        WHERE reservation.codeUtilisateur=:codeUtilisateur 
-        and reservation.codeVilleMiseDispo = v1.codeVille 
-        and reservation.codeVilleRendre = v2.codeVille
-        order by  reservation.dateReservation desc
-        ";
+    $requeteSql = "CALL GetReservationsForClient(:codeUtilisateur)";
     $pdoStatement = $pdo->prepare($requeteSql);
     $pdoStatement->bindParam(':codeUtilisateur', $codeUtilisateur, PDO::PARAM_STR);
     $pdoStatement->execute();
@@ -274,10 +267,10 @@ function changementEtatDeUneReservationDeUnUtilisateur($codeUtilisateur, $codeRe
 
 function changementEtatDeUnDevisDeUnUtilisateur($codeDevis, $valider) {
     $pdo = gestionnaireDeConnexion();
-    $requeteSql = "update devis set valider = :valider where devis.codeDevis = :codeDevis ";
+    $requeteSql = "UPDATE devis SET valider = :valider WHERE codeDevis = :codeDevis";
     $pdoStatement = $pdo->prepare($requeteSql);
-    $pdoStatement->bindParam(':codeDevis', $codeDevis, PDO::PARAM_STR);
-    $pdoStatement->bindParam(':valider', $valider, PDO::PARAM_STR);
+    $pdoStatement->bindValue(':codeDevis', $codeDevis, PDO::PARAM_INT);
+    $pdoStatement->bindValue(':valider', $valider, PDO::PARAM_STR);
     $pdoStatement->execute();
     $pdoStatement->closeCursor();
 }
@@ -394,15 +387,15 @@ function miseEnFormeCriterePourSQL(Array $criteres) {
     return substr($criteresSql, 0, strlen($criteresSql) - 3);
 }
 
-function verificationSaisie(string $checkFinal) {
-    echo suppressionBaliseJavascript($checkFinal);
-    echo strip_tags($checkFinal);
+function verificationSaisie(string $checkFinal): string {
+    $checkFinal = suppressionBaliseJavascript($checkFinal);
+    return strip_tags($checkFinal);
 }
 
-function suppressionBaliseJavascript(string $chaine) {
+function suppressionBaliseJavascript(string $chaine): string {
     $cleanString = $chaine;
 
-    while (strpos($cleanString, "<script>") != false) {
+    while (strpos($cleanString, "<script>") !== false) {
         $deb = strpos($cleanString, "<script>");
         $fin = strpos($cleanString, "</script>");
 
