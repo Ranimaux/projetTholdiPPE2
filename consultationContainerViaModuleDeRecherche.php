@@ -100,7 +100,7 @@ if ($donneesDuFormulaire != null) {
                                 <span class="fw-bold ">
                                     <?php
                                     echo htmlspecialchars(verificationSaisie($unContainer["tarifJour"]));
-                                    ?>
+                                    ?> €
                             </div>
                         </div>
                         
