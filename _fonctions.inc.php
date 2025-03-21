@@ -131,8 +131,7 @@ function insererUneLigneDeReservation($codeReservation, $codeTypeContainer, $qua
 function obtenirCompteUtilisateur($identifiant) {
     $compteExistant = false;
     $pdo = gestionnaireDeConnexion();
-    $requeteSql = "SELECT * FROM utilisateur "
-            . " WHERE identifiant=:identifiant ";
+    $requeteSql = "CALL GetCompteUtilisateur(:identifiant)";
     $pdoStatement = $pdo->prepare($requeteSql);
     $pdoStatement->bindParam(':identifiant', $identifiant, PDO::PARAM_STR);
     $pdoStatement->execute();
@@ -154,13 +153,7 @@ function obtenirCompteUtilisateur($identifiant) {
 function obtenirCollectionDeReservationsPourUnClient($codeUtilisateur) {
 
     $pdo = gestionnaireDeConnexion();
-    $requeteSql = "SELECT reservation.*, v1.nomVille as nomVilleMiseDispo, v2.nomVille as nomVilleRendre 
-        FROM reservation, ville v1, ville v2  
-        WHERE reservation.codeUtilisateur=:codeUtilisateur 
-        and reservation.codeVilleMiseDispo = v1.codeVille 
-        and reservation.codeVilleRendre = v2.codeVille
-        order by  reservation.dateReservation desc
-        ";
+    $requeteSql = "CALL GetReservationsForClient(:codeUtilisateur)";
     $pdoStatement = $pdo->prepare($requeteSql);
     $pdoStatement->bindParam(':codeUtilisateur', $codeUtilisateur, PDO::PARAM_STR);
     $pdoStatement->execute();
