@@ -67,7 +67,8 @@ include_once '_debut.inc.php';
                         <div class="col">
                             Volume du Container au 
                             <span class="fw-bold text-uppercase ">
-                                <?php echo $unTypeDeContainer["volumeEnMetreCube"]; ?> 
+                                <?php echo $unTypeDeContainer["volumeEnMetreCube"]; ?>
+                                mètre cube
                             </span>
                         </div>
                     </div>
@@ -76,6 +77,7 @@ include_once '_debut.inc.php';
                             Capacité du Container
                             <span class="fw-bold text-uppercase ">
                                 <?php echo $unTypeDeContainer["capaciteDeChargeEnTonne"]; ?> 
+                                mètre cube
                             </span>
                         </div>
                     </div>
@@ -84,6 +86,7 @@ include_once '_debut.inc.php';
                             Tarif par jour
                             <span class="fw-bold text-uppercase ">
                                 <?php echo $unTypeDeContainer["tarifJour"]; ?> 
+                                €
                             </span>
                         </div>
                     </div>

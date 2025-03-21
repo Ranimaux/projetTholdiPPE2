@@ -80,8 +80,8 @@ include_once '_debut.inc.php';
                                 Volume estim&eacute; :
                                 <span class="fw-bold ">
                                     <?php
-                                    echo ($uneReservation["volumeEstime"]) ? $uneReservation["volumeEstime"] : "<i>Non renseigné</i>";
-                                    ?>
+                                    echo ($uneReservation["volumeEstime"])? $uneReservation["volumeEstime"] : "<i>Non renseigné</i>";
+                                    ?> au mètre cube
                             </div>
                         </div>
 
